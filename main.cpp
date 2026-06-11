@@ -1,5 +1,7 @@
 #include <iostream>
+#include <array>
 #include "logic.h"
+
 
 int main(int argc, char *argv[]){
     // game loop
@@ -14,6 +16,8 @@ int main(int argc, char *argv[]){
             std::string guess = getInput();
             
             // evaluate input
+            std::array<LetterColour, 5> result = evaluateInput(guess, word);
+            
             
             // output board
             

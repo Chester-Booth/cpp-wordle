@@ -1,9 +1,11 @@
+#include "logic.h"
 #include <string> 
 #include <fstream> 
 #include <cstdlib> 
 #include <iostream>
 #include <algorithm>
 #include <cctype>
+#include <array>
 
 // helper functions
 
@@ -68,4 +70,24 @@ std::string getInput() {
     {
         return guess;
     }
+}
+
+std::array<LetterColour, 5> evaluateInput(std::string guess, std::string word){
+    std::array<LetterColour, 5> result = {GREY, GREY, GREY, GREY, GREY};
+
+    for (int i = 0; i < 5; i++){
+        // green
+        if (guess[i] == word[i]){
+            result[i] = GREEN;
+        }
+        // yellow (letter in word, wrong pos)
+        else if (word.find(guess[i]) != std::string::npos){
+            result[i] = YELLOW;
+        }
+        else{
+            result[i] = GREY;
+        }
+    }
+    
+    return result;
 }
