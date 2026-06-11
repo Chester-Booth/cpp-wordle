@@ -73,7 +73,9 @@ std::string pickWord() {
 std::string getInput(int errors) {
     std::string guess;
 
-    std::cin >> guess;
+    if (!(std::cin >> guess)) {
+        return "";
+    }
     std::cout << "\u001b[1A\u001b[2K\r"; // clear line and return cursor to start
     
     // if there were errors, clear previous error messages
@@ -253,13 +255,17 @@ bool checkWin(std::string guess, std::string word, int remainingGuesses){
 bool playAgain(){
     std::string input;
     std::cout << "Play again? (y/n): ";
-    std::cin >> input;
+    if (!(std::cin >> input)) {
+        return false;
+    }
     std::string lowerInput = input;
 
     // lowercase
     std::transform(lowerInput.begin(), lowerInput.end(), lowerInput.begin(), ::tolower);
 
-
+    if (lowerInput.empty()) {
+        return false;
+    }
     if (lowerInput[0] == 'y'){
         return true;
     }
