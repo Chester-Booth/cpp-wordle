@@ -91,3 +91,25 @@ std::array<LetterColour, 5> evaluateInput(std::string guess, std::string word){
     
     return result;
 }
+
+void displayGuess(std::array<LetterColour, 5> guess, std::string word){
+    
+    // display guess with colours (ansi codes)
+    for (int i = 0; i < 5; i++){
+        switch (guess[i]){
+            case GREY:
+                std::cout << "\u001b[30m\u001b[100m" << word[i];
+                break;
+            case YELLOW:
+                std::cout << "\u001b[30m\u001b[43m" << word[i];
+                break;
+            case GREEN:
+                std::cout << "\u001b[30m\u001b[42m" << word[i];
+                break;
+        }
+    }
+
+    // reset colour + newline
+    std::cout << "\u001b[0m\n";
+
+}

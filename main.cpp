@@ -18,8 +18,9 @@ int main(int argc, char *argv[]){
             // evaluate input
             std::array<LetterColour, 5> result = evaluateInput(guess, word);
             
-            
-            // output board
+
+            // display Guess
+            displayGuess(result, guess);
             
             // ouput keyboard
 
