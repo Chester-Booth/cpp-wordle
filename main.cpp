@@ -38,6 +38,8 @@ void gameLoop(){
 }
 
 int main(int argc, char *argv[]){
+    projectRoot = std::filesystem::canonical(argv[0]).parent_path().parent_path();
+
     // game loop
     while (true){
         gameLoop();

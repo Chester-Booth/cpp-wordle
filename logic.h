@@ -2,12 +2,15 @@
 
 #include <string>
 #include <vector>
+#include <filesystem>
 
 enum LetterColour{
     GREY,
     YELLOW,
     GREEN
 };
+
+inline std::filesystem::path projectRoot;
 
 std::string pickWord();
 

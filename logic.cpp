@@ -7,10 +7,12 @@
 #include <array>
 #include <random>
 #include <tuple>
+#include <filesystem>
+
 
 // helper functions
 
-int countLines(const std::string& path) {
+int countLines(const std::filesystem::path& path) {
     std::ifstream file(path);
     std::string line;
     int count = 0;
@@ -21,7 +23,7 @@ int countLines(const std::string& path) {
     return count;
 }
 
-bool wordInList(const std::string& word, const std::string& path) {
+bool wordInList(const std::string& word, const std::filesystem::path& path) {
     std::ifstream file(path);
     std::string line;
     std::string lowerWord = word;
@@ -42,15 +44,18 @@ bool wordInList(const std::string& word, const std::string& path) {
 // public questions
 
 std::string pickWord() {
-    std::ifstream MyReadFile("data/answer-words.txt");
-    int lineCount = countLines("data/answer-words.txt");
+    std::ifstream MyReadFile(projectRoot / "data/answer-words.txt");
+    int lineCount = countLines(projectRoot / "data/answer-words.txt");
+    if (lineCount <= 0) {
+        throw std::runtime_error("answer word list is empty or missing");
+    }
 
     // seed 
     std::random_device rd; 
     // init random number generator with seed
     std::mt19937 gen(rd()); 
     // create distribution for line numbers
-    std::uniform_int_distribution<> distr(1, lineCount);
+    std::uniform_int_distribution<> distr(0, lineCount - 1);
     // pick random line number
     int randomNum = distr(gen);
 
@@ -76,7 +81,7 @@ std::string getInput(int errors) {
         std::cout << "Invalid input, try again.\n";
         return getInput(errors + 1);
     }
-    else if (wordInList(guess, "data/input-words.txt") == false) {
+    else if (wordInList(guess, projectRoot / "data/input-words.txt") == false) {
         std::cout << "Word not in list, try again.\n";
         return getInput(errors + 1);
     }
