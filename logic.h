@@ -19,6 +19,8 @@ void updateGuessedLetters(std::vector<std::tuple<char, LetterColour>> &guessedLe
 
 void displayGuess(std::array<LetterColour, 5> guess, std::string word);
 
+void displayKeyboard(std::vector<std::tuple<char, LetterColour>> guessedLetters);
+
 bool playAgain();
 
 bool checkWin(std::string guess, std::string word);

@@ -27,7 +27,8 @@ void gameLoop(){
         displayGuess(result, guess);
         
         // ouput keyboard
-        // display keyboard with colours
+        displayKeyboard(guessedLetters);
+
         
         // check win 
         if (checkWin(guess,word)){return;}

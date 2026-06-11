@@ -39,7 +39,6 @@ bool wordInList(const std::string& word, const std::string& path) {
 }
 
 
-
 // public questions
 
 std::string pickWord() {
@@ -122,16 +121,16 @@ void updateGuessedLetters(
     std::vector<std::tuple<char, LetterColour>> &guessedLetters, 
     std::string guess, std::array<LetterColour, 5> result
 ){
-   for (int i = 0; i < 5; i++){
+    for (int i = 0; i < 5; i++){
 
-    char currentGuess = guess[i];
-    LetterColour currentResult = result[i];
+        char currentGuess = guess[i];
+        LetterColour currentResult = result[i];
 
         // get the tuple in guessedLetters with char currentGuess, if it exists
         std::vector<std::tuple<char, LetterColour>>::iterator foundLetter = std::find_if(guessedLetters.begin(), guessedLetters.end(),
         [currentGuess](const std::tuple<char, LetterColour>& element) {
-        return std::get<0>(element) == currentGuess;
-    });
+            return std::get<0>(element) == currentGuess;
+        });
 
 
         // if it exists, update the colour if currentResult is better (GREEN > YELLOW > GREY)
@@ -140,11 +139,11 @@ void updateGuessedLetters(
             if (currentResult > std::get<1>(*foundLetter)) {
                 // update tuple in guessedLetters with currentResult
                 std::get<1>(*foundLetter) = currentResult;
-        }
+            }
         } else {
             // add to guessedLetters
             guessedLetters.emplace_back(currentGuess, currentResult);
-    }
+        }
     }
 
 }
@@ -170,6 +169,42 @@ void displayGuess(std::array<LetterColour, 5> guess, std::string word){
     std::cout << "\u001b[0m\n";
 
 }
+
+void displayKeyboard(std::vector<std::tuple<char, LetterColour>> guessedLetters){
+
+    std::string keyboard = "q w e r t y u i o p\n  a s d f g h j k l\n    z x c v b n m\n";
+    // for every char in keyboard set as c
+    for (char& c : keyboard){
+
+        // get the tuple in guessedLetters with char currentGuess, if it exists
+        std::vector<std::tuple<char, LetterColour>>::iterator foundLetter = std::find_if(guessedLetters.begin(), guessedLetters.end(),
+        [c](const std::tuple<char, LetterColour>& element) {
+            return std::get<0>(element) == c;
+        });
+
+        
+        // if in guessedLetters, display background colour
+        if (foundLetter != guessedLetters.end()){
+            switch (std::get<1>(*foundLetter)){
+                case GREY:
+                    std::cout << "\u001b[30m\u001b[100m" << c << "\u001b[0m";
+                    break;
+                case YELLOW:
+                    std::cout << "\u001b[30m\u001b[43m" << c << "\u001b[0m";
+                    break;
+                case GREEN:
+                    std::cout << "\u001b[30m\u001b[42m" << c << "\u001b[0m";
+                    break;
+            }
+        }
+        else{
+            std::cout << c;
+        }
+    }
+
+}
+
+
 
 bool playAgain(){
     std::string input;
