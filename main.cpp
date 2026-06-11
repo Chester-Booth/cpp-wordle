@@ -1,8 +1,13 @@
 #include <iostream>
 #include <array>
+#include <tuple>
+#include <vector>
 #include "logic.h"
 
 void gameLoop(){
+    // guessed letters vector
+    std::vector<std::tuple<char, LetterColour>> guessedLetters;
+
     // pick word
     std::string word = pickWord();
 
@@ -14,14 +19,16 @@ void gameLoop(){
         
         // evaluate input
         std::array<LetterColour, 5> result = evaluateInput(guess, word);
-        
+
+        // update guessed letters
+        updateGuessedLetters(guessedLetters, guess, result);
 
         // display Guess
         displayGuess(result, guess);
         
         // ouput keyboard
+        // display keyboard with colours
         
-
         // check win 
         if (checkWin(guess,word)){return;}
     }

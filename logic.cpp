@@ -1,12 +1,12 @@
 #include "logic.h"
 #include <string> 
 #include <fstream> 
-#include <cstdlib> 
 #include <iostream>
 #include <algorithm>
 #include <cctype>
 #include <array>
 #include <random>
+#include <tuple>
 
 // helper functions
 
@@ -109,7 +109,46 @@ std::array<LetterColour, 5> evaluateInput(std::string guess, std::string word){
         }
     }
     
+
     return result;
+}
+
+void updateGuessedLetters(
+    std::vector<std::tuple<char, LetterColour>> &guessedLetters, 
+    std::string guess, std::array<LetterColour, 5> result
+){
+   for (int i = 0; i < 5; i++){
+
+    char currentGuess = guess[i];
+    LetterColour currentResult = result[i];
+
+    // check if letter already in guessedLetters
+    bool alreadyGuessed = std::any_of(guessedLetters.begin(), guessedLetters.end(), 
+    [currentGuess](const auto& element) {
+        return std::get<0>(element) == currentGuess;
+    });
+
+    if (alreadyGuessed){
+        std::tuple<char, LetterColour> existing; // find the tuple in guessedLetters
+
+        // if current colour is better, update it 
+        if (std::get<0>(existing) < currentResult){
+            // update to better colour
+            guessedLetters.insert(
+                std::find(guessedLetters.begin(), guessedLetters.end(), existing), 
+                std::tuple<char, LetterColour>(currentGuess, currentResult)
+            );
+        }
+        
+    }
+    else{
+        // add to guessedLetters
+        guessedLetters.push_back(std::tuple<char,LetterColour>(currentGuess, currentResult));
+    }
+
+   }
+
+
 }
 
 void displayGuess(std::array<LetterColour, 5> guess, std::string word){
