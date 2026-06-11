@@ -20,6 +20,8 @@ int countLines(const std::filesystem::path& path) {
     while (std::getline(file, line)) {
         ++count;
     }
+
+    file.close();
     return count;
 }
 
@@ -34,9 +36,11 @@ bool wordInList(const std::string& word, const std::filesystem::path& path) {
     while (std::getline(file, line)) {
         std::transform(line.begin(), line.end(), line.begin(), ::tolower);
         if (line == lowerWord) {
+            file.close();
             return true;
         }
     }
+    file.close();
     return false;
 }
 
@@ -62,6 +66,7 @@ std::string pickWord() {
     std::string word;
     for (int i = 0; i <= randomNum && std::getline(MyReadFile, word); i++) {}
 
+    MyReadFile.close();
     return word;
 }
 
