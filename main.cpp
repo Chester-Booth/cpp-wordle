@@ -1,7 +1,33 @@
 #include <iostream>
-
+#include "logic.h"
 
 int main(int argc, char *argv[]){
-    std::cout << "Hello, World!" << std::endl;
+    // game loop
+    while(true){
+        // pick word
+        std::string word = pickWord();
+
+        // guess loop
+        for (int i = 0; i < 6; i++){
+
+            // get input + validate input
+            std::string guess = getInput();
+            
+            // evaluate input
+            
+            // output board
+            
+            // ouput keyboard
+
+            // check win 
+        }
+        // loss 
+        std::cout << "You Loose :(\nThe word was: " << word << std::endl;
+
+        // ask to play again
+
+    }
     return 0;
+
 } 
+
