@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+#include <tuple>
 #include <string>
 #include <vector>
 #include <filesystem>
