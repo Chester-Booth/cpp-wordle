@@ -1,0 +1,43 @@
+# Build directories
+build/
+cmake-build-*/
+out/
+bin/
+obj/
+
+# Compiled objects and libraries
+*.o
+*.obj
+*.lo
+*.la
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+main
+
+# CMake and Make output
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+Makefile
+
+# Debug and profiling files
+*.dSYM/
+*.gcda
+*.gcno
+*.gcov
+*.profraw
+*.profdata
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
