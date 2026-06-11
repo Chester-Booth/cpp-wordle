@@ -127,32 +127,25 @@ void updateGuessedLetters(
     char currentGuess = guess[i];
     LetterColour currentResult = result[i];
 
-    // check if letter already in guessedLetters
-    bool alreadyGuessed = std::any_of(guessedLetters.begin(), guessedLetters.end(), 
-    [currentGuess](const auto& element) {
+        // get the tuple in guessedLetters with char currentGuess, if it exists
+        std::vector<std::tuple<char, LetterColour>>::iterator foundLetter = std::find_if(guessedLetters.begin(), guessedLetters.end(),
+        [currentGuess](const std::tuple<char, LetterColour>& element) {
         return std::get<0>(element) == currentGuess;
     });
 
-    if (alreadyGuessed){
-        std::tuple<char, LetterColour> existing; // find the tuple in guessedLetters
 
-        // if current colour is better, update it 
-        if (std::get<0>(existing) < currentResult){
-            // update to better colour
-            guessedLetters.insert(
-                std::find(guessedLetters.begin(), guessedLetters.end(), existing), 
-                std::tuple<char, LetterColour>(currentGuess, currentResult)
-            );
+        // if it exists, update the colour if currentResult is better (GREEN > YELLOW > GREY)
+        if (foundLetter != guessedLetters.end()) {
+            // already exists — update
+            if (currentResult > std::get<1>(*foundLetter)) {
+                // update tuple in guessedLetters with currentResult
+                std::get<1>(*foundLetter) = currentResult;
         }
-        
+        } else {
+            // add to guessedLetters
+            guessedLetters.emplace_back(currentGuess, currentResult);
     }
-    else{
-        // add to guessedLetters
-        guessedLetters.push_back(std::tuple<char,LetterColour>(currentGuess, currentResult));
     }
-
-   }
-
 
 }
 
