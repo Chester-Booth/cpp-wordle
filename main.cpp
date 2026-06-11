@@ -37,7 +37,7 @@ void gameLoop(){
         if (checkWin(guess,word,5 - i)){return;}
     }
     // loss 
-    std::cout << "You Loose :(\nThe word was: " << word << "\n\n";
+    std::cout << "You Loose :(\nThe word was: " << word << "\nz\u001b[2K\n";
 }
 
 int main(int argc, char *argv[]){
