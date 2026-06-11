@@ -11,6 +11,9 @@ void gameLoop(){
     // pick word
     std::string word = pickWord();
 
+    // output keyboard
+    displayKeyboard(guessedLetters, 6);
+
     // guess loop
     for (int i = 0; i < 6; i++){
 
