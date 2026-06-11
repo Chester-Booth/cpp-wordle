@@ -90,17 +90,22 @@ std::array<LetterColour, 5> evaluateInput(std::string guess, std::string word){
 
     std::array<LetterColour, 5> result = {GREY, GREY, GREY, GREY, GREY};
 
+    // first pass for greens, remove from guess to avoid double counting
     for (int i = 0; i < 5; i++){
-        // green
         if (lowerGuess[i] == lowerWord[i]){
             result[i] = GREEN;
+            lowerWord[i] = '_'; // prevent double counting for yellow
         }
-        // yellow (letter in word, wrong pos)
-        else if (lowerWord.find(lowerGuess[i]) != std::string::npos){
+    }
+
+    // yellows, letter in word, but not green
+    for (int i = 0; i < 5; i++){
+        if (result[i] == GREEN){
+            continue; // already green, skip
+        }
+
+        if (lowerWord.find(lowerGuess[i]) != std::string::npos){
             result[i] = YELLOW;
-        }
-        else{
-            result[i] = GREY;
         }
     }
     
