@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cctype>
 #include <array>
+#include <random>
 
 // helper functions
 
@@ -29,6 +30,7 @@ bool wordInList(const std::string& word, const std::string& path) {
     std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
 
     while (std::getline(file, line)) {
+        std::transform(line.begin(), line.end(), line.begin(), ::tolower);
         if (line == lowerWord) {
             return true;
         }
@@ -44,7 +46,14 @@ std::string pickWord() {
     std::ifstream MyReadFile("data/answer-words.txt");
     int lineCount = countLines("data/answer-words.txt");
 
-    int randomNum = rand() % lineCount+1;
+    // seed 
+    std::random_device rd; 
+    // init random number generator with seed
+    std::mt19937 gen(rd()); 
+    // create distribution for line numbers
+    std::uniform_int_distribution<> distr(1, lineCount);
+    // pick random line number
+    int randomNum = distr(gen);
 
     std::string word;
     for (int i = 0; i <= randomNum && std::getline(MyReadFile, word); i++) {}
@@ -73,15 +82,21 @@ std::string getInput() {
 }
 
 std::array<LetterColour, 5> evaluateInput(std::string guess, std::string word){
+    // lowercase both words 
+    std::string lowerWord = word;
+    std::string lowerGuess = guess;
+    std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
+    std::transform(lowerGuess.begin(), lowerGuess.end(), lowerGuess.begin(), ::tolower);
+
     std::array<LetterColour, 5> result = {GREY, GREY, GREY, GREY, GREY};
 
     for (int i = 0; i < 5; i++){
         // green
-        if (guess[i] == word[i]){
+        if (lowerGuess[i] == lowerWord[i]){
             result[i] = GREEN;
         }
         // yellow (letter in word, wrong pos)
-        else if (word.find(guess[i]) != std::string::npos){
+        else if (lowerWord.find(lowerGuess[i]) != std::string::npos){
             result[i] = YELLOW;
         }
         else{
@@ -112,4 +127,43 @@ void displayGuess(std::array<LetterColour, 5> guess, std::string word){
     // reset colour + newline
     std::cout << "\u001b[0m\n";
 
+}
+
+bool playAgain(){
+    std::string input;
+    std::cout << "Play again? (y/n): ";
+    std::cin >> input;
+    std::string lowerInput = input;
+
+    // lowercase
+    std::transform(lowerInput.begin(), lowerInput.end(), lowerInput.begin(), ::tolower);
+
+
+    if (lowerInput[0] == 'y'){
+        return true;
+    }
+    else if (lowerInput[0] == 'n'){
+        return false;
+    }
+    else{
+        std::cout << "Invalid input, try again.\n";
+        return playAgain();
+    }
+}
+
+bool checkWin(std::string guess, std::string word){
+    // lowercase both words 
+    std::string lowerWord = word;
+    std::string lowerGuess = guess;
+    std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
+    std::transform(lowerGuess.begin(), lowerGuess.end(), lowerGuess.begin(), ::tolower);
+            
+    if (lowerGuess == lowerWord){
+        std::cout << "You Win!\nThe word was: " << word << std::endl;
+        return true;
+    }
+    else{
+        return false;
+    }
+    
 }
