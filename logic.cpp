@@ -106,6 +106,11 @@ std::array<LetterColour, 5> evaluateInput(std::string guess, std::string word){
 
         if (lowerWord.find(lowerGuess[i]) != std::string::npos){
             result[i] = YELLOW;
+            // remove first instance of letter from lowerWord to prevent double counting
+            int pos = lowerWord.find(lowerGuess[i]);
+            if (pos != std::string::npos) {
+                lowerWord[pos] = '_';
+            }
         }
     }
     
