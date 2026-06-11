@@ -26,15 +26,15 @@ void gameLoop(){
         // display Guess
         displayGuess(result, guess);
         
-        // ouput keyboard
-        displayKeyboard(guessedLetters);
+        // output keyboard
+        displayKeyboard(guessedLetters, 5 - i);
 
         
         // check win 
-        if (checkWin(guess,word)){return;}
+        if (checkWin(guess,word,5 - i)){return;}
     }
     // loss 
-    std::cout << "You Loose :(\nThe word was: " << word << std::endl;
+    std::cout << "You Loose :(\nThe word was: " << word << "\n\n";
 }
 
 int main(int argc, char *argv[]){
@@ -45,6 +45,12 @@ int main(int argc, char *argv[]){
         // ask to play again
         if (!playAgain()){
             return 0;
+        }
+        else{
+            // clear console (move cursor up 10 lines and clear line, for the 6 guesses, keyboard and spacing)
+            for (int i = 0; i < 10; i++){
+                std::cout << "\u001b[1A\u001b[2K\r";
+            }
         }
     }
 } 

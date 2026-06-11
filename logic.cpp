@@ -60,19 +60,25 @@ std::string pickWord() {
     return word;
 }
 
-std::string getInput() {
+std::string getInput(int errors) {
     std::string guess;
 
-    std::cout << "Guess: ";
     std::cin >> guess;
+    std::cout << "\u001b[1A\u001b[2K\r"; // clear line and return cursor to start
+    
+    // if there were errors, clear previous error messages
+    for (int i = 0; i < errors; i++){
+        std::cout << "\u001b[1A\u001b[2K\r"; // clear line and return cursor to start
+    }
+    errors = 0; // reset errors after clearing
 
     if (guess.length() != 5) {
         std::cout << "Invalid input, try again.\n";
-        return getInput();
+        return getInput(errors + 1);
     }
     else if (wordInList(guess, "data/input-words.txt") == false) {
         std::cout << "Word not in list, try again.\n";
-        return getInput();
+        return getInput(errors + 1);
     }
     else
     {
@@ -170,9 +176,14 @@ void displayGuess(std::array<LetterColour, 5> guess, std::string word){
 
 }
 
-void displayKeyboard(std::vector<std::tuple<char, LetterColour>> guessedLetters){
+void displayKeyboard(std::vector<std::tuple<char, LetterColour>> guessedLetters, int remainingGuesses){
+    // add newlines equal to remaining guesses to move keyboard down
+    for (int i = 0; i < remainingGuesses; i++){
+        std::cout << "\n";
+    }
 
-    std::string keyboard = "q w e r t y u i o p\n  a s d f g h j k l\n    z x c v b n m\n";
+    // initial newline for spacing (and errors on final guess) and qwerty layout
+    std::string keyboard = "\nq w e r t y u i o p\n  a s d f g h j k l\n    z x c v b n m";
     // for every char in keyboard set as c
     for (char& c : keyboard){
 
@@ -201,10 +212,33 @@ void displayKeyboard(std::vector<std::tuple<char, LetterColour>> guessedLetters)
             std::cout << c;
         }
     }
+    // move cursor up to past the keyboard and to the next guess and return to start
+    std::cout << "\u001b["<< 4+(remainingGuesses-1) <<"A\r"; 
 
 }
 
+bool checkWin(std::string guess, std::string word, int remainingGuesses){
+    // lowercase both words 
+    std::string lowerWord = word;
+    std::string lowerGuess = guess;
+    std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
+    std::transform(lowerGuess.begin(), lowerGuess.end(), lowerGuess.begin(), ::tolower);
+            
+    if (lowerGuess == lowerWord){
+        // move cursor down to below keyboard and output win message
+        for (int i = 0; i <= remainingGuesses; i++){
+            std::cout << "\u001b[1B\u001b[2K";
+        }
 
+
+        std::cout << "You Win!\nThe word was: " << word << std::endl;
+        return true;
+    }
+    else{
+        return false;
+    }
+    
+}
 
 bool playAgain(){
     std::string input;
@@ -226,21 +260,4 @@ bool playAgain(){
         std::cout << "Invalid input, try again.\n";
         return playAgain();
     }
-}
-
-bool checkWin(std::string guess, std::string word){
-    // lowercase both words 
-    std::string lowerWord = word;
-    std::string lowerGuess = guess;
-    std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
-    std::transform(lowerGuess.begin(), lowerGuess.end(), lowerGuess.begin(), ::tolower);
-            
-    if (lowerGuess == lowerWord){
-        std::cout << "You Win!\nThe word was: " << word << std::endl;
-        return true;
-    }
-    else{
-        return false;
-    }
-    
 }
