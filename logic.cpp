@@ -175,19 +175,19 @@ void updateGuessedLetters(
 
 }
 
-void displayGuess(const std::array<LetterColour, WORD_LENGTH>& guess,const std::string& word){
+void displayGuess(const std::array<LetterColour, WORD_LENGTH>& colours,const std::string& guess){
     
     // display guess with colours (ansi codes)
     for (int i = 0; i < WORD_LENGTH; i++){
-        switch (guess[i]){
+        switch (colours[i]){
             case GREY:
-                std::cout << ansi::FG_BLACK << ansi::BG_GREY << word[i];
+                std::cout << ansi::FG_BLACK << ansi::BG_GREY << guess[i];
                 break;
             case YELLOW:
-                std::cout << ansi::FG_BLACK << ansi::BG_YELLOW  << word[i];
+                std::cout << ansi::FG_BLACK << ansi::BG_YELLOW  << guess[i];
                 break;
             case GREEN:
-                std::cout << ansi::FG_BLACK << ansi::BG_GREEN  << word[i];
+                std::cout << ansi::FG_BLACK << ansi::BG_GREEN  << guess[i];
                 break;
         }
     }

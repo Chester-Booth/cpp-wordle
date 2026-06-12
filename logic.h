@@ -47,7 +47,7 @@ std::array<LetterColour, 5> evaluateInput(const std::string& guess, const std::s
 
 void updateGuessedLetters(std::vector<GuessedLetter> &guessedLetters, std::string guess, std::array<LetterColour, 5> result);
 
-void displayGuess(const std::array<LetterColour, 5>& guess,const std::string& word);
+void displayGuess(const std::array<LetterColour, 5>& colours,const std::string& guess);
 
 void displayKeyboard(const std::vector<GuessedLetter>& guessedLetters, int remainingGuesses);
 
