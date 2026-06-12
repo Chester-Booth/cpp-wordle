@@ -94,7 +94,7 @@ std::string getInput(const Config& cfg, int errors) {
     }
 }
 
-std::array<LetterColour, 5> evaluateInput(std::string guess, std::string word){
+std::array<LetterColour, 5> evaluateInput(const std::string& guess, const std::string& word){
     // lowercase both words 
     std::string lowerWord = word;
     std::string lowerGuess = guess;
@@ -162,7 +162,7 @@ void updateGuessedLetters(
 
 }
 
-void displayGuess(std::array<LetterColour, 5> guess, std::string word){
+void displayGuess(const std::array<LetterColour, 5>& guess,const std::string& word){
     
     // display guess with colours (ansi codes)
     for (int i = 0; i < 5; i++){
@@ -184,7 +184,7 @@ void displayGuess(std::array<LetterColour, 5> guess, std::string word){
 
 }
 
-void displayKeyboard(std::vector<std::tuple<char, LetterColour>> guessedLetters, int remainingGuesses){
+void displayKeyboard(const std::vector<std::tuple<char, LetterColour>>& guessedLetters, int remainingGuesses){
     // add newlines equal to remaining guesses to move keyboard down
     for (int i = 0; i < remainingGuesses; i++){
         std::cout << "\n";
@@ -196,7 +196,7 @@ void displayKeyboard(std::vector<std::tuple<char, LetterColour>> guessedLetters,
     for (char& c : keyboard){
 
         // get the tuple in guessedLetters with char currentGuess, if it exists
-        std::vector<std::tuple<char, LetterColour>>::iterator foundLetter = std::find_if(guessedLetters.begin(), guessedLetters.end(),
+        std::vector<std::tuple<char, LetterColour>>::const_iterator foundLetter = std::find_if(guessedLetters.begin(), guessedLetters.end(),
         [c](const std::tuple<char, LetterColour>& element) {
             return std::get<0>(element) == c;
         });
@@ -225,7 +225,7 @@ void displayKeyboard(std::vector<std::tuple<char, LetterColour>> guessedLetters,
 
 }
 
-bool checkWin(std::string guess, std::string word, int remainingGuesses){
+bool checkWin(const std::string& guess, const std::string& word, int remainingGuesses){
     // lowercase both words 
     std::string lowerWord = word;
     std::string lowerGuess = guess;
