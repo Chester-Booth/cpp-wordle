@@ -1,14 +1,13 @@
-#include <iostream>
-#include <vector>
 #include "logic.h"
+#include <iostream>
 
-void gameLoop(const Config& cfg, const std::unordered_set<std::string>& validInputWords) {
+static void gameLoop(const Config& cfg, const std::unordered_set<std::string>& validInputWords) {
 
     // guessed letters vector
     std::vector<GuessedLetter> guessedLetters;
 
     // pick word
-    std::string word = "hippy"; // pickWord(cfg.dataDir / "answer-words.txt");
+    std::string word = pickWord(cfg.dataDir / "answer-words.txt");
 
     // output keyboard
     displayKeyboard(guessedLetters, MAX_GUESSES);
@@ -40,7 +39,7 @@ void gameLoop(const Config& cfg, const std::unordered_set<std::string>& validInp
     displayLoss(word);
 }
 
-int main(int argc, char* argv[]) {
+int main(int /*argc*/, char* argv[]) {
 
     // config
     Config cfg;
@@ -57,12 +56,11 @@ int main(int argc, char* argv[]) {
         // ask to play again
         if (!playAgain()) {
             return 0;
-        } else {
-            // clear console (move cursor up 10 lines and clear line, for the [MAX_GUESSES] guesses,
-            // keyboard(3) and spacing(1))
-            for (int i = 0; i < (KEYBOARD_LINE_COUNT + MAX_GUESSES); i++) {
-                std::cout << ansi::CURSOR_UP << ansi::CLEAR_LINE << '\r';
-            }
+        }
+        // clear console (move cursor up 10 lines and clear line, for the [MAX_GUESSES] guesses,
+        // keyboard(3) and spacing(1))
+        for (int i = 0; i < (KEYBOARD_LINE_COUNT + MAX_GUESSES); i++) {
+            std::cout << ansi::CURSOR_UP << ansi::CLEAR_LINE << '\r';
         }
     }
 }

@@ -1,11 +1,11 @@
 #pragma once
 
 #include <array>
-#include <tuple>
-#include <string>
-#include <vector>
 #include <filesystem>
+#include <string>
+#include <tuple>
 #include <unordered_set>
+#include <vector>
 
 inline constexpr int WORD_LENGTH = 5;
 inline constexpr int MAX_GUESSES = 6;

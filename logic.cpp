@@ -1,8 +1,8 @@
 #include "logic.h"
-#include <fstream>
-#include <iostream>
 #include <algorithm>
 #include <cctype>
+#include <fstream>
+#include <iostream>
 #include <random>
 #include <vector>
 
