@@ -39,10 +39,10 @@ std::unordered_set<std::string> loadWordList(const std::filesystem::path& path) 
     return words;
 }
 
-std::string pickWord(const Config& cfg) {
+std::string pickWord(const std::filesystem::path& path) {
 
     // open filestram
-    std::ifstream file(cfg.dataDir / "answer-words.txt");
+    std::ifstream file(path);
 
     // setup vars
     std::vector<std::string> words;

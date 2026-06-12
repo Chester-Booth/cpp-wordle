@@ -39,7 +39,7 @@ struct GuessedLetter {
 
 std::unordered_set<std::string> loadWordList(const std::filesystem::path& path);
 
-std::string pickWord(const Config& cfg);
+std::string pickWord(const std::filesystem::path& path);
 
 std::string getInput(const std::unordered_set<std::string>& validInputWords);
 

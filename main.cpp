@@ -8,7 +8,7 @@ void gameLoop(const Config& cfg, const std::unordered_set<std::string>& validInp
     std::vector<GuessedLetter> guessedLetters;
 
     // pick word
-    std::string word = pickWord(cfg);
+    std::string word = pickWord(cfg.dataDir / "answer-words.txt");
 
     // output keyboard
     displayKeyboard(guessedLetters, MAX_GUESSES);
@@ -17,7 +17,7 @@ void gameLoop(const Config& cfg, const std::unordered_set<std::string>& validInp
     for (int i = 0; i < MAX_GUESSES; i++) {
 
         // get input + validate input
-        std::string guess = getInput(cfg, validInputWords);
+        std::string guess = getInput(validInputWords);
 
         // evaluate input
         std::array<LetterColour, WORD_LENGTH> result = evaluateInput(guess, word);
