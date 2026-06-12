@@ -4,22 +4,10 @@
 #include <algorithm>
 #include <cctype>
 #include <random>
+#include <vector>
 
 
 // helper functions
-
-int countLines(const std::filesystem::path& path) {
-    std::ifstream file(path);
-    std::string line;
-    int count = 0;
-
-    while (std::getline(file, line)) {
-        ++count;
-    }
-
-    file.close();
-    return count;
-}
 
 bool wordInList(const std::string& word, const std::filesystem::path& path) {
     std::ifstream file(path);
@@ -44,26 +32,33 @@ bool wordInList(const std::string& word, const std::filesystem::path& path) {
 // public questions
 
 std::string pickWord(const Config& cfg) {
-    std::ifstream MyReadFile(cfg.dataDir / "answer-words.txt");
-    int lineCount = countLines(cfg.dataDir / "answer-words.txt");
-    if (lineCount <= 0) {
-        throw std::runtime_error("answer word list is empty or missing");
+
+    // open filestram
+    std::ifstream file(cfg.dataDir / "answer-words.txt");
+
+    // setup vars 
+    std::vector<std::string> words;
+    std::string line;
+
+    // add each (non-empty) line to vector
+    while (std::getline(file,line)){
+        if (!line.empty()) words.push_back(line);
     }
+    if (words.empty()) throw std::runtime_error("answer word list is empty or missing");
+    file.close();
+
 
     // seed 
     std::random_device rd; 
     // init random number generator with seed
     std::mt19937 gen(rd()); 
     // create distribution for line numbers
-    std::uniform_int_distribution<> distr(0, lineCount - 1);
+    std::uniform_int_distribution<> distr(0, words.size() - 1);
     // pick random line number
     int randomNum = distr(gen);
 
-    std::string word;
-    for (int i = 0; i <= randomNum && std::getline(MyReadFile, word); i++) {}
-
-    MyReadFile.close();
-    return word;
+    // return word at that line
+    return words[randomNum];
 }
 
 std::string getInput(const Config& cfg, int errors) {
