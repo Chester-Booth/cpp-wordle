@@ -267,3 +267,10 @@ bool playAgain() {
         }
     }
 }
+
+void displayLoss(const std::string& word) {
+    // ouput loss message and clear leftover lines from the keyboard
+    std::cout << "You Lose :(\nThe word was: " << word << '\n'
+              << ansi::CLEAR_LINE << '\n'
+              << ansi::CLEAR_LINE;
+}

@@ -8,7 +8,7 @@ void gameLoop(const Config& cfg, const std::unordered_set<std::string>& validInp
     std::vector<GuessedLetter> guessedLetters;
 
     // pick word
-    std::string word = pickWord(cfg.dataDir / "answer-words.txt");
+    std::string word = "hippy"; // pickWord(cfg.dataDir / "answer-words.txt");
 
     // output keyboard
     displayKeyboard(guessedLetters, MAX_GUESSES);
@@ -37,9 +37,7 @@ void gameLoop(const Config& cfg, const std::unordered_set<std::string>& validInp
         }
     }
     // loss
-    std::cout << "You Loose :(\nThe word was: " << word << '\n'
-              << ansi::CLEAR_LINE << '\n'
-              << ansi::CLEAR_LINE;
+    displayLoss(word);
 }
 
 int main(int argc, char* argv[]) {

@@ -56,3 +56,5 @@ void displayKeyboard(const std::vector<GuessedLetter>& guessedLetters, int remai
 bool playAgain();
 
 bool checkWin(const std::string& guess, const std::string& word, int remainingGuesses);
+
+void displayLoss(const std::string& word);
