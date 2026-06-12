@@ -1,6 +1,5 @@
 #include <iostream>
-#include <array>
-#include <tuple>
+
 #include <vector>
 #include "logic.h"
 

@@ -1,13 +1,9 @@
 #include "logic.h"
-#include <string> 
 #include <fstream> 
 #include <iostream>
 #include <algorithm>
 #include <cctype>
-#include <array>
 #include <random>
-#include <tuple>
-#include <filesystem>
 
 
 // helper functions
