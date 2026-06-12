@@ -9,13 +9,8 @@
 // helper functions
 
 static bool wordInList(const std::string& word, const std::unordered_set<std::string>& validWords) {
-    std::string lowerWord = word;
-
-    // lowercase
-    std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
-
     // check if in set
-    return validWords.count(lowerWord) > 0;
+    return validWords.count(word) > 0;
 }
 
 // public functions
@@ -66,8 +61,10 @@ std::string pickWord(const std::filesystem::path& path) {
     // pick random line number
     int randomNum = distr(gen);
 
-    // return word at that line
-    return words[randomNum];
+    // return lowercased word at that line
+    std::string word = words[randomNum];
+    std::transform(word.begin(), word.end(), word.begin(), ::tolower);
+    return word;
 }
 
 std::string getInput(const std::unordered_set<std::string>& validInputWords) {
@@ -88,33 +85,35 @@ std::string getInput(const std::unordered_set<std::string>& validInputWords) {
             error = false; // reset error after clearing
         }
 
+        std::string lowerGuess = guess;
+
+        // lowercase
+        std::transform(lowerGuess.begin(), lowerGuess.end(), lowerGuess.begin(), ::tolower);
+
         if (guess.length() != WORD_LENGTH) {
             std::cout << "Invalid input, try again.\n";
             error = true;
-        } else if (wordInList(guess, validInputWords) == false) {
+        } else if (wordInList(lowerGuess, validInputWords) == false) {
             std::cout << "Word not in list, try again.\n";
             error = true;
         } else {
-            return guess;
+            return lowerGuess;
         }
     }
 }
 
 std::array<LetterColour, WORD_LENGTH> evaluateInput(const std::string& guess,
                                                     const std::string& word) {
-    // lowercase both words
-    std::string lowerWord = word;
-    std::string lowerGuess = guess;
-    std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
-    std::transform(lowerGuess.begin(), lowerGuess.end(), lowerGuess.begin(), ::tolower);
+    // copy of word for manipulation
+    std::string alteredWord = word;
 
     std::array<LetterColour, WORD_LENGTH> result = {GREY, GREY, GREY, GREY, GREY};
 
     // first pass for greens, remove from guess to avoid double counting
     for (int i = 0; i < WORD_LENGTH; i++) {
-        if (lowerGuess[i] == lowerWord[i]) {
+        if (guess[i] == word[i]) {
             result[i] = GREEN;
-            lowerWord[i] = '_'; // prevent double counting for yellow
+            alteredWord[i] = '_'; // prevent double counting for yellow
         }
     }
 
@@ -125,10 +124,10 @@ std::array<LetterColour, WORD_LENGTH> evaluateInput(const std::string& guess,
         }
 
         // remove first instance of letter from lowerWord to prevent double counting
-        std::string::size_type pos = lowerWord.find(lowerGuess[i]);
+        std::string::size_type pos = alteredWord.find(guess[i]);
         if (pos != std::string::npos) {
             result[i] = YELLOW;
-            lowerWord[pos] = '_';
+            alteredWord[pos] = '_';
         }
     }
 
@@ -225,13 +224,7 @@ void displayKeyboard(const std::vector<GuessedLetter>& guessedLetters, int remai
 }
 
 bool checkWin(const std::string& guess, const std::string& word, int remainingGuesses) {
-    // lowercase both words
-    std::string lowerWord = word;
-    std::string lowerGuess = guess;
-    std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
-    std::transform(lowerGuess.begin(), lowerGuess.end(), lowerGuess.begin(), ::tolower);
-
-    if (lowerGuess == lowerWord) {
+    if (guess == word) {
         // move cursor down to below keyboard and output win message
         for (int i = 0; i <= remainingGuesses; i++) {
             std::cout << ansi::CURSOR_DOWN << ansi::CLEAR_LINE;
