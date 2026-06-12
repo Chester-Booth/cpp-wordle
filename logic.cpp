@@ -6,30 +6,42 @@
 #include <random>
 #include <vector>
 
-
 // helper functions
 
-bool wordInList(const std::string& word, const std::filesystem::path& path) {
-    std::ifstream file(path);
-    std::string line;
+bool wordInList(const std::string& word, const std::unordered_set<std::string>& validWords) {
     std::string lowerWord = word;
 
     // lowercase
     std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
 
-    while (std::getline(file, line)) {
-        std::transform(line.begin(), line.end(), line.begin(), ::tolower);
-        if (line == lowerWord) {
-            file.close();
-            return true;
-        }
-    }
-    file.close();
-    return false;
+    // check if in set
+    return validWords.count(lowerWord) > 0;
 }
 
 
 // public questions
+
+std::unordered_set<std::string> loadWordList(const std::filesystem::path& path) {
+    std::unordered_set<std::string> words;
+    std::ifstream file(path);
+    
+
+    std::string line;
+    while (std::getline(file, line)) {
+        if (!line.empty()) {
+            // lowercase
+            std::transform(line.begin(), line.end(), line.begin(), ::tolower);
+            
+            // add to set
+            words.insert(line);
+        }
+    }
+    file.close();
+
+    return words;
+
+
+}
 
 std::string pickWord(const Config& cfg) {
 
@@ -61,7 +73,7 @@ std::string pickWord(const Config& cfg) {
     return words[randomNum];
 }
 
-std::string getInput(const Config& cfg, int errors) {
+std::string getInput(const Config& cfg, const std::unordered_set<std::string>& validInputWords, int errors ) {
     std::string guess;
 
     if (!(std::cin >> guess)) {
@@ -77,11 +89,11 @@ std::string getInput(const Config& cfg, int errors) {
 
     if (guess.length() != 5) {
         std::cout << "Invalid input, try again.\n";
-        return getInput(cfg, errors + 1);
+        return getInput(cfg, validInputWords, errors + 1);
     }
-    else if (wordInList(guess, cfg.dataDir / "input-words.txt") == false) {
+    else if (wordInList(guess, validInputWords) == false) {
         std::cout << "Word not in list, try again.\n";
-        return getInput(cfg, errors + 1);
+        return getInput(cfg, validInputWords, errors + 1);
     }
     else
     {

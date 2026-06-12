@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include <unordered_set>
 
 enum LetterColour{
     GREY,
@@ -21,9 +22,11 @@ struct GuessedLetter {
     LetterColour colour;
 };
 
+std::unordered_set<std::string> loadWordList(const std::filesystem::path& path);
+
 std::string pickWord(const Config& cfg);
 
-std::string getInput(const Config& cfg, int errors = 0);
+std::string getInput(const Config& cfg, const std::unordered_set<std::string>& validInputWords, int errors = 0);
 
 std::array<LetterColour, 5> evaluateInput(const std::string& guess, const std::string& word);
 

@@ -1,9 +1,8 @@
 #include <iostream>
-
 #include <vector>
 #include "logic.h"
 
-void gameLoop(const Config& cfg){
+void gameLoop(const Config& cfg, const std::unordered_set<std::string>& validInputWords){
 
     // guessed letters vector
     std::vector<GuessedLetter> guessedLetters;
@@ -18,7 +17,7 @@ void gameLoop(const Config& cfg){
     for (int i = 0; i < 6; i++){
 
         // get input + validate input
-        std::string guess = getInput(cfg);
+        std::string guess = getInput(cfg, validInputWords);
         
         // evaluate input
         std::array<LetterColour, 5> result = evaluateInput(guess, word);
@@ -46,9 +45,12 @@ int main(int argc, char *argv[]){
     Config cfg;
     cfg.dataDir = std::filesystem::canonical(argv[0]).parent_path().parent_path() / "data";
 
+    // load word list for validating input, once at the start of the program, instead of every time we get input
+    std::unordered_set<std::string> validInputWords = loadWordList(cfg.dataDir / "input-words.txt");
+
     // game loop
     while (true){
-        gameLoop(cfg);
+        gameLoop(cfg, validInputWords);
   
         // ask to play again
         if (!playAgain()){
