@@ -7,6 +7,6 @@ BreakBeforeBraces: Attach
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: None
-SortIncludes: false
+SortIncludes: CaseSensitive
 PointerAlignment: Left
 DerivePointerAlignment: false
