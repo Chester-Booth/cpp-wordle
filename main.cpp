@@ -11,16 +11,16 @@ void gameLoop(const Config& cfg, const std::unordered_set<std::string>& validInp
     std::string word = pickWord(cfg);
 
     // output keyboard
-    displayKeyboard(guessedLetters, 6);
+    displayKeyboard(guessedLetters, MAX_GUESSES);
 
     // guess loop
-    for (int i = 0; i < 6; i++){
+    for (int i = 0; i < MAX_GUESSES; i++){
 
         // get input + validate input
         std::string guess = getInput(cfg, validInputWords);
         
         // evaluate input
-        std::array<LetterColour, 5> result = evaluateInput(guess, word);
+        std::array<LetterColour, WORD_LENGTH> result = evaluateInput(guess, word);
 
         // update guessed letters
         updateGuessedLetters(guessedLetters, guess, result);
@@ -29,7 +29,7 @@ void gameLoop(const Config& cfg, const std::unordered_set<std::string>& validInp
         displayGuess(result, guess);
         
         // output keyboard
-        displayKeyboard(guessedLetters, 5 - i);
+        displayKeyboard(guessedLetters, (MAX_GUESSES - 1 ) - i);
 
         
         // check win 
@@ -57,8 +57,8 @@ int main(int argc, char *argv[]){
             return 0;
         }
         else{
-            // clear console (move cursor up 10 lines and clear line, for the 6 guesses, keyboard and spacing)
-            for (int i = 0; i < 10; i++){
+            // clear console (move cursor up 10 lines and clear line, for the [MAX_GUESSES] guesses, keyboard(3) and spacing(1))
+            for (int i = 0; i < (4+MAX_GUESSES); i++){
                 std::cout << "\u001b[1A\u001b[2K\r";
             }
         }

@@ -90,7 +90,7 @@ std::string getInput(const Config& cfg, const std::unordered_set<std::string>& v
         }
         
 
-        if (guess.length() != 5) {
+        if (guess.length() != WORD_LENGTH) {
             std::cout << "Invalid input, try again.\n";
             error = true;
         }
@@ -105,17 +105,17 @@ std::string getInput(const Config& cfg, const std::unordered_set<std::string>& v
     }
 }
 
-std::array<LetterColour, 5> evaluateInput(const std::string& guess, const std::string& word){
+std::array<LetterColour, WORD_LENGTH> evaluateInput(const std::string& guess, const std::string& word){
     // lowercase both words 
     std::string lowerWord = word;
     std::string lowerGuess = guess;
     std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
     std::transform(lowerGuess.begin(), lowerGuess.end(), lowerGuess.begin(), ::tolower);
 
-    std::array<LetterColour, 5> result = {GREY, GREY, GREY, GREY, GREY};
+    std::array<LetterColour, WORD_LENGTH> result = {GREY, GREY, GREY, GREY, GREY};
 
     // first pass for greens, remove from guess to avoid double counting
-    for (int i = 0; i < 5; i++){
+    for (int i = 0; i < WORD_LENGTH; i++){
         if (lowerGuess[i] == lowerWord[i]){
             result[i] = GREEN;
             lowerWord[i] = '_'; // prevent double counting for yellow
@@ -123,7 +123,7 @@ std::array<LetterColour, 5> evaluateInput(const std::string& guess, const std::s
     }
 
     // yellows, letter in word, but not green
-    for (int i = 0; i < 5; i++){
+    for (int i = 0; i < WORD_LENGTH; i++){
         if (result[i] == GREEN){
             continue; // already green, skip
         }
@@ -142,9 +142,9 @@ std::array<LetterColour, 5> evaluateInput(const std::string& guess, const std::s
 
 void updateGuessedLetters(
     std::vector<GuessedLetter> &guessedLetters, 
-    std::string guess, std::array<LetterColour, 5> result
+    std::string guess, std::array<LetterColour, WORD_LENGTH> result
 ){
-    for (int i = 0; i < 5; i++){
+    for (int i = 0; i < WORD_LENGTH; i++){
 
         char currentGuess = guess[i];
         LetterColour currentResult = result[i];
@@ -175,10 +175,10 @@ void updateGuessedLetters(
 
 }
 
-void displayGuess(const std::array<LetterColour, 5>& guess,const std::string& word){
+void displayGuess(const std::array<LetterColour, WORD_LENGTH>& guess,const std::string& word){
     
     // display guess with colours (ansi codes)
-    for (int i = 0; i < 5; i++){
+    for (int i = 0; i < WORD_LENGTH; i++){
         switch (guess[i]){
             case GREY:
                 std::cout << "\u001b[30m\u001b[100m" << word[i];

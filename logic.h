@@ -7,6 +7,9 @@
 #include <filesystem>
 #include <unordered_set>
 
+inline constexpr int WORD_LENGTH = 5;
+inline constexpr int MAX_GUESSES = 6;
+
 enum LetterColour{
     GREY,
     YELLOW,
