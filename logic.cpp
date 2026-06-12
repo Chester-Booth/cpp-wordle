@@ -23,7 +23,8 @@ std::unordered_set<std::string> loadWordList(const std::filesystem::path& path) 
     while (std::getline(file, line)) {
         if (!line.empty()) {
             // lowercase
-            std::transform(line.begin(), line.end(), line.begin(), ::tolower);
+            std::transform(line.begin(), line.end(), line.begin(),
+                           [](unsigned char c) { return std::tolower(c); });
 
             // add to set
             words.insert(line);
@@ -63,7 +64,8 @@ std::string pickWord(const std::filesystem::path& path) {
 
     // return lowercased word at that line
     std::string word = words[randomNum];
-    std::transform(word.begin(), word.end(), word.begin(), ::tolower);
+    std::transform(word.begin(), word.end(), word.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
     return word;
 }
 
@@ -88,7 +90,8 @@ std::string getInput(const std::unordered_set<std::string>& validInputWords) {
         std::string lowerGuess = guess;
 
         // lowercase
-        std::transform(lowerGuess.begin(), lowerGuess.end(), lowerGuess.begin(), ::tolower);
+        std::transform(lowerGuess.begin(), lowerGuess.end(), lowerGuess.begin(),
+                       [](unsigned char c) { return std::tolower(c); });
 
         if (guess.length() != WORD_LENGTH) {
             std::cout << "Invalid input, try again.\n";
@@ -249,7 +252,8 @@ bool playAgain() {
         std::string lowerInput = input;
 
         // lowercase
-        std::transform(lowerInput.begin(), lowerInput.end(), lowerInput.begin(), ::tolower);
+        std::transform(lowerInput.begin(), lowerInput.end(), lowerInput.begin(),
+                       [](unsigned char c) { return std::tolower(c); });
 
         if (lowerInput.empty()) {
             return false;
