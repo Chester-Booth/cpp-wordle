@@ -74,30 +74,34 @@ std::string pickWord(const Config& cfg) {
 }
 
 std::string getInput(const Config& cfg, const std::unordered_set<std::string>& validInputWords, int errors ) {
-    std::string guess;
-
-    if (!(std::cin >> guess)) {
-        return "";
-    }
-    std::cout << "\u001b[1A\u001b[2K\r"; // clear line and return cursor to start
+    bool error = false;
     
-    // if there were errors, clear previous error messages
-    for (int i = 0; i < errors; i++){
-        std::cout << "\u001b[1A\u001b[2K\r"; // clear line and return cursor to start
-    }
-    errors = 0; // reset errors after clearing
+    while(true){
+        std::string guess;
+        if (!(std::cin >> guess)) return "";
 
-    if (guess.length() != 5) {
-        std::cout << "Invalid input, try again.\n";
-        return getInput(cfg, validInputWords, errors + 1);
-    }
-    else if (wordInList(guess, validInputWords) == false) {
-        std::cout << "Word not in list, try again.\n";
-        return getInput(cfg, validInputWords, errors + 1);
-    }
-    else
-    {
-        return guess;
+        std::cout << "\u001b[1A\u001b[2K\r"; // clear line and return cursor to start
+
+        // if there were errors, clear previous error messages
+        if (error){
+            // clear line and return custor to start
+            std::cout << "\u001b[1A\u001b[2K\r";
+            error = false; // reset error after clearing
+        }
+        
+
+        if (guess.length() != 5) {
+            std::cout << "Invalid input, try again.\n";
+            error = true;
+        }
+        else if (wordInList(guess, validInputWords) == false) {
+            std::cout << "Word not in list, try again.\n";
+            error = true;
+        }
+        else
+        {
+            return guess;
+        }
     }
 }
 
@@ -261,26 +265,28 @@ bool checkWin(const std::string& guess, const std::string& word, int remainingGu
 
 bool playAgain(){
     std::string input;
-    std::cout << "Play again? (y/n): ";
-    if (!(std::cin >> input)) {
-        return false;
-    }
-    std::string lowerInput = input;
+    
+    while (true){
+        std::cout << "Play again? (y/n): ";
+        
+        if (!(std::cin >> input)) return false;
+        
+        std::string lowerInput = input;
 
-    // lowercase
-    std::transform(lowerInput.begin(), lowerInput.end(), lowerInput.begin(), ::tolower);
+        // lowercase
+        std::transform(lowerInput.begin(), lowerInput.end(), lowerInput.begin(), ::tolower);
 
-    if (lowerInput.empty()) {
-        return false;
-    }
-    if (lowerInput[0] == 'y'){
-        return true;
-    }
-    else if (lowerInput[0] == 'n'){
-        return false;
-    }
-    else{
-        std::cout << "Invalid input, try again.\n";
-        return playAgain();
+        if (lowerInput.empty()) {
+            return false;
+        }
+        if (lowerInput[0] == 'y'){
+            return true;
+        }
+        else if (lowerInput[0] == 'n'){
+            return false;
+        }
+        else{
+            std::cout << "Invalid input, try again.\n";
+        }
     }
 }
