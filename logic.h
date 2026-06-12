@@ -47,8 +47,8 @@ std::string getInput(const Config& cfg, const std::unordered_set<std::string>& v
 std::array<LetterColour, WORD_LENGTH> evaluateInput(const std::string& guess,
                                                     const std::string& word);
 
-void updateGuessedLetters(std::vector<GuessedLetter>& guessedLetters, std::string guess,
-                          std::array<LetterColour, WORD_LENGTH> result);
+void updateGuessedLetters(std::vector<GuessedLetter>& guessedLetters, const std::string& guess,
+                          const std::array<LetterColour, WORD_LENGTH>& result);
 
 void displayGuess(const std::array<LetterColour, WORD_LENGTH>& colours, const std::string& guess);
 

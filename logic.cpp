@@ -136,8 +136,8 @@ std::array<LetterColour, WORD_LENGTH> evaluateInput(const std::string& guess,
     return result;
 }
 
-void updateGuessedLetters(std::vector<GuessedLetter>& guessedLetters, std::string guess,
-                          std::array<LetterColour, WORD_LENGTH> result) {
+void updateGuessedLetters(std::vector<GuessedLetter>& guessedLetters, const std::string& guess,
+                          const std::array<LetterColour, WORD_LENGTH>& result) {
     for (int i = 0; i < WORD_LENGTH; i++) {
 
         char currentGuess = guess[i];
