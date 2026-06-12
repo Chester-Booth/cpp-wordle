@@ -12,11 +12,14 @@ enum LetterColour{
     GREEN
 };
 
-inline std::filesystem::path projectRoot;
 
-std::string pickWord();
+struct Config {
+    std::filesystem::path dataDir;
+};
 
-std::string getInput(int errors = 0);
+std::string pickWord(const Config& cfg);
+
+std::string getInput(const Config& cfg, int errors = 0);
 
 std::array<LetterColour, 5> evaluateInput(std::string guess, std::string word);
 

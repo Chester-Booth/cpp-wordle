@@ -3,12 +3,13 @@
 #include <vector>
 #include "logic.h"
 
-void gameLoop(){
+void gameLoop(const Config& cfg){
+
     // guessed letters vector
     std::vector<std::tuple<char, LetterColour>> guessedLetters;
 
     // pick word
-    std::string word = pickWord();
+    std::string word = pickWord(cfg);
 
     // output keyboard
     displayKeyboard(guessedLetters, 6);
@@ -17,7 +18,7 @@ void gameLoop(){
     for (int i = 0; i < 6; i++){
 
         // get input + validate input
-        std::string guess = getInput();
+        std::string guess = getInput(cfg);
         
         // evaluate input
         std::array<LetterColour, 5> result = evaluateInput(guess, word);
@@ -40,11 +41,14 @@ void gameLoop(){
 }
 
 int main(int argc, char *argv[]){
-    projectRoot = std::filesystem::canonical(argv[0]).parent_path().parent_path();
+
+    // config
+    Config cfg;
+    cfg.dataDir = std::filesystem::canonical(argv[0]).parent_path().parent_path() / "data";
 
     // game loop
     while (true){
-        gameLoop();
+        gameLoop(cfg);
   
         // ask to play again
         if (!playAgain()){

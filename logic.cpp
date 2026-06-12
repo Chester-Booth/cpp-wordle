@@ -43,9 +43,9 @@ bool wordInList(const std::string& word, const std::filesystem::path& path) {
 
 // public questions
 
-std::string pickWord() {
-    std::ifstream MyReadFile(projectRoot / "data/answer-words.txt");
-    int lineCount = countLines(projectRoot / "data/answer-words.txt");
+std::string pickWord(const Config& cfg) {
+    std::ifstream MyReadFile(cfg.dataDir / "answer-words.txt");
+    int lineCount = countLines(cfg.dataDir / "answer-words.txt");
     if (lineCount <= 0) {
         throw std::runtime_error("answer word list is empty or missing");
     }
@@ -66,7 +66,7 @@ std::string pickWord() {
     return word;
 }
 
-std::string getInput(int errors) {
+std::string getInput(const Config& cfg, int errors) {
     std::string guess;
 
     if (!(std::cin >> guess)) {
@@ -82,11 +82,11 @@ std::string getInput(int errors) {
 
     if (guess.length() != 5) {
         std::cout << "Invalid input, try again.\n";
-        return getInput(errors + 1);
+        return getInput(cfg, errors + 1);
     }
-    else if (wordInList(guess, projectRoot / "data/input-words.txt") == false) {
+    else if (wordInList(guess, cfg.dataDir / "input-words.txt") == false) {
         std::cout << "Word not in list, try again.\n";
-        return getInput(errors + 1);
+        return getInput(cfg, errors + 1);
     }
     else
     {
