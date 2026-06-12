@@ -6,7 +6,7 @@
 void gameLoop(const Config& cfg){
 
     // guessed letters vector
-    std::vector<std::tuple<char, LetterColour>> guessedLetters;
+    std::vector<GuessedLetter> guessedLetters;
 
     // pick word
     std::string word = pickWord(cfg);

@@ -132,7 +132,7 @@ std::array<LetterColour, 5> evaluateInput(const std::string& guess, const std::s
 }
 
 void updateGuessedLetters(
-    std::vector<std::tuple<char, LetterColour>> &guessedLetters, 
+    std::vector<GuessedLetter> &guessedLetters, 
     std::string guess, std::array<LetterColour, 5> result
 ){
     for (int i = 0; i < 5; i++){
@@ -141,22 +141,26 @@ void updateGuessedLetters(
         LetterColour currentResult = result[i];
 
         // get the tuple in guessedLetters with char currentGuess, if it exists
-        std::vector<std::tuple<char, LetterColour>>::iterator foundLetter = std::find_if(guessedLetters.begin(), guessedLetters.end(),
-        [currentGuess](const std::tuple<char, LetterColour>& element) {
-            return std::get<0>(element) == currentGuess;
+        std::vector<GuessedLetter>::iterator foundLetter = std::find_if(guessedLetters.begin(), guessedLetters.end(),
+        [currentGuess](const GuessedLetter& element) {
+            return element.letter == currentGuess;
         });
 
 
         // if it exists, update the colour if currentResult is better (GREEN > YELLOW > GREY)
         if (foundLetter != guessedLetters.end()) {
             // already exists — update
-            if (currentResult > std::get<1>(*foundLetter)) {
+            if (currentResult > foundLetter->colour) {
                 // update tuple in guessedLetters with currentResult
-                std::get<1>(*foundLetter) = currentResult;
+                foundLetter->colour = currentResult;
             }
         } else {
             // add to guessedLetters
-            guessedLetters.emplace_back(currentGuess, currentResult);
+            GuessedLetter newLetter;
+            newLetter.letter = currentGuess;
+            newLetter.colour = currentResult;
+
+            guessedLetters.emplace_back(newLetter);
         }
     }
 
@@ -184,7 +188,7 @@ void displayGuess(const std::array<LetterColour, 5>& guess,const std::string& wo
 
 }
 
-void displayKeyboard(const std::vector<std::tuple<char, LetterColour>>& guessedLetters, int remainingGuesses){
+void displayKeyboard(const std::vector<GuessedLetter>& guessedLetters, int remainingGuesses){
     // add newlines equal to remaining guesses to move keyboard down
     for (int i = 0; i < remainingGuesses; i++){
         std::cout << "\n";
@@ -196,15 +200,15 @@ void displayKeyboard(const std::vector<std::tuple<char, LetterColour>>& guessedL
     for (char& c : keyboard){
 
         // get the tuple in guessedLetters with char currentGuess, if it exists
-        std::vector<std::tuple<char, LetterColour>>::const_iterator foundLetter = std::find_if(guessedLetters.begin(), guessedLetters.end(),
-        [c](const std::tuple<char, LetterColour>& element) {
-            return std::get<0>(element) == c;
+        std::vector<GuessedLetter>::const_iterator foundLetter = std::find_if(guessedLetters.begin(), guessedLetters.end(),
+        [c](const GuessedLetter& element) {
+            return element.letter == c;
         });
 
         
         // if in guessedLetters, display background colour
         if (foundLetter != guessedLetters.end()){
-            switch (std::get<1>(*foundLetter)){
+            switch (foundLetter->colour){
                 case GREY:
                     std::cout << "\u001b[30m\u001b[100m" << c << "\u001b[0m";
                     break;
