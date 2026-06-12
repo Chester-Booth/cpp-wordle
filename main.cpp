@@ -36,7 +36,7 @@ void gameLoop(const Config& cfg, const std::unordered_set<std::string>& validInp
         if (checkWin(guess,word,5 - i)){return;}
     }
     // loss 
-    std::cout << "You Loose :(\nThe word was: " << word << "\nz\u001b[2K\n";
+    std::cout << "You Loose :(\nThe word was: " << word << '\n' << ansi::CLEAR_LINE << '\n' << ansi::CLEAR_LINE;
 }
 
 int main(int argc, char *argv[]){
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]){
         else{
             // clear console (move cursor up 10 lines and clear line, for the [MAX_GUESSES] guesses, keyboard(3) and spacing(1))
             for (int i = 0; i < (4+MAX_GUESSES); i++){
-                std::cout << "\u001b[1A\u001b[2K\r";
+                std::cout << ansi::CURSOR_UP << ansi::CLEAR_LINE << '\r';
             }
         }
     }

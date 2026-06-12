@@ -80,12 +80,12 @@ std::string getInput(const Config& cfg, const std::unordered_set<std::string>& v
         std::string guess;
         if (!(std::cin >> guess)) return "";
 
-        std::cout << "\u001b[1A\u001b[2K\r"; // clear line and return cursor to start
+        std::cout << ansi::CURSOR_UP << ansi::CLEAR_LINE << '\r'; // clear line and return cursor to start
 
         // if there were errors, clear previous error messages
         if (error){
             // clear line and return custor to start
-            std::cout << "\u001b[1A\u001b[2K\r";
+            std::cout << ansi::CURSOR_UP << ansi::CLEAR_LINE << '\r';
             error = false; // reset error after clearing
         }
         
@@ -181,19 +181,19 @@ void displayGuess(const std::array<LetterColour, WORD_LENGTH>& guess,const std::
     for (int i = 0; i < WORD_LENGTH; i++){
         switch (guess[i]){
             case GREY:
-                std::cout << "\u001b[30m\u001b[100m" << word[i];
+                std::cout << ansi::FG_BLACK << ansi::BG_GREY << word[i];
                 break;
             case YELLOW:
-                std::cout << "\u001b[30m\u001b[43m" << word[i];
+                std::cout << ansi::FG_BLACK << ansi::BG_YELLOW  << word[i];
                 break;
             case GREEN:
-                std::cout << "\u001b[30m\u001b[42m" << word[i];
+                std::cout << ansi::FG_BLACK << ansi::BG_GREEN  << word[i];
                 break;
         }
     }
 
     // reset colour + newline
-    std::cout << "\u001b[0m\n";
+    std::cout << ansi::RESET << '\n';
 
 }
 
@@ -219,13 +219,13 @@ void displayKeyboard(const std::vector<GuessedLetter>& guessedLetters, int remai
         if (foundLetter != guessedLetters.end()){
             switch (foundLetter->colour){
                 case GREY:
-                    std::cout << "\u001b[30m\u001b[100m" << c << "\u001b[0m";
+                    std::cout << ansi::FG_BLACK << ansi::BG_GREY  << c << ansi::RESET;
                     break;
                 case YELLOW:
-                    std::cout << "\u001b[30m\u001b[43m" << c << "\u001b[0m";
+                    std::cout << ansi::FG_BLACK << ansi::BG_YELLOW  << c << ansi::RESET;
                     break;
                 case GREEN:
-                    std::cout << "\u001b[30m\u001b[42m" << c << "\u001b[0m";
+                    std::cout << ansi::FG_BLACK << ansi::BG_GREEN  << c << ansi::RESET;
                     break;
             }
         }
@@ -234,8 +234,10 @@ void displayKeyboard(const std::vector<GuessedLetter>& guessedLetters, int remai
         }
     }
     // move cursor up to past the keyboard and to the next guess and return to start
-    std::cout << "\u001b["<< 4+(remainingGuesses-1) <<"A\r"; 
-
+    for (int i = 0; i < (4+(remainingGuesses-1)); i++){
+        std::cout << ansi::CURSOR_UP;
+    }
+    std::cout << '\r';
 }
 
 bool checkWin(const std::string& guess, const std::string& word, int remainingGuesses){
@@ -248,7 +250,7 @@ bool checkWin(const std::string& guess, const std::string& word, int remainingGu
     if (lowerGuess == lowerWord){
         // move cursor down to below keyboard and output win message
         for (int i = 0; i <= remainingGuesses; i++){
-            std::cout << "\u001b[1B\u001b[2K";
+            std::cout << ansi::CURSOR_DOWN << ansi::CLEAR_LINE;
         }
 
 

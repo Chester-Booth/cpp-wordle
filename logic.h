@@ -10,6 +10,18 @@
 inline constexpr int WORD_LENGTH = 5;
 inline constexpr int MAX_GUESSES = 6;
 
+namespace ansi {
+    constexpr auto CLEAR_LINE     = "\u001b[2K";
+    constexpr auto CURSOR_UP      = "\u001b[1A";
+    constexpr auto CURSOR_DOWN    = "\u001b[1B";
+    constexpr auto RESET          = "\u001b[0m";
+    constexpr auto BG_GREY        = "\u001b[100m";
+    constexpr auto BG_YELLOW      = "\u001b[43m";
+    constexpr auto BG_GREEN       = "\u001b[42m";
+    constexpr auto FG_BLACK       = "\u001b[30m";
+}
+
+
 enum LetterColour{
     GREY,
     YELLOW,
