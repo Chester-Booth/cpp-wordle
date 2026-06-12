@@ -159,11 +159,7 @@ void updateGuessedLetters(std::vector<GuessedLetter>& guessedLetters, const std:
             }
         } else {
             // add to guessedLetters
-            GuessedLetter newLetter;
-            newLetter.letter = currentGuess;
-            newLetter.colour = currentResult;
-
-            guessedLetters.emplace_back(newLetter);
+            guessedLetters.emplace_back(GuessedLetter{currentGuess, currentResult});
         }
     }
 }
