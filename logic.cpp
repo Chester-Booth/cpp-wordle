@@ -128,13 +128,11 @@ std::array<LetterColour, 5> evaluateInput(const std::string& guess, const std::s
             continue; // already green, skip
         }
 
-        if (lowerWord.find(lowerGuess[i]) != std::string::npos){
+        // remove first instance of letter from lowerWord to prevent double counting
+        std::string::size_type pos = lowerWord.find(lowerGuess[i]);
+        if (pos != std::string::npos){
             result[i] = YELLOW;
-            // remove first instance of letter from lowerWord to prevent double counting
-            int pos = lowerWord.find(lowerGuess[i]);
-            if (pos != std::string::npos) {
-                lowerWord[pos] = '_';
-            }
+            lowerWord[pos] = '_';
         }
     }
     
