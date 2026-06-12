@@ -234,7 +234,8 @@ void displayKeyboard(const std::vector<GuessedLetter>& guessedLetters, int remai
         }
     }
     // move cursor up to past the keyboard and to the next guess and return to start
-    for (int i = 0; i < (4+(remainingGuesses-1)); i++){
+    constexpr int KEYBOARD_LINE_COUNT = 4;
+    for (int i = 0; i < (KEYBOARD_LINE_COUNT+(remainingGuesses-1)); i++){
         std::cout << ansi::CURSOR_UP;
     }
     std::cout << '\r';
