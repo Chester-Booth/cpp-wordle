@@ -8,7 +8,7 @@
 
 // helper functions
 
-bool wordInList(const std::string& word, const std::unordered_set<std::string>& validWords) {
+static bool wordInList(const std::string& word, const std::unordered_set<std::string>& validWords) {
     std::string lowerWord = word;
 
     // lowercase
@@ -18,7 +18,7 @@ bool wordInList(const std::string& word, const std::unordered_set<std::string>& 
     return validWords.count(lowerWord) > 0;
 }
 
-// public questions
+// public functions
 
 std::unordered_set<std::string> loadWordList(const std::filesystem::path& path) {
     std::unordered_set<std::string> words;
