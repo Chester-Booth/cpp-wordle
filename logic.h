@@ -23,9 +23,9 @@ namespace ansi {
 
 
 enum LetterColour{
-    GREY,
-    YELLOW,
-    GREEN
+    GREY = 0,   // worst
+    YELLOW = 1,
+    GREEN = 2   // best
 };
 
 struct Config {
