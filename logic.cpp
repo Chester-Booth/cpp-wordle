@@ -70,7 +70,7 @@ std::string pickWord(const Config& cfg) {
     return words[randomNum];
 }
 
-std::string getInput(const Config& cfg, const std::unordered_set<std::string>& validInputWords) {
+std::string getInput(const std::unordered_set<std::string>& validInputWords) {
     bool error = false;
 
     while (true) {

@@ -41,7 +41,7 @@ std::unordered_set<std::string> loadWordList(const std::filesystem::path& path);
 
 std::string pickWord(const Config& cfg);
 
-std::string getInput(const Config& cfg, const std::unordered_set<std::string>& validInputWords);
+std::string getInput(const std::unordered_set<std::string>& validInputWords);
 
 std::array<LetterColour, WORD_LENGTH> evaluateInput(const std::string& guess,
                                                     const std::string& word);
